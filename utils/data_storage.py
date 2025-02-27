@@ -28,4 +28,4 @@ def get_posts():
 
 
 if __name__ == "__main__":
-    add_post()
+    get_posts()

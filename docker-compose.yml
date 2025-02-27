@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    container_name: posts_app
+    restart: always
+    volumes:
+      - posts_app_storage:/app/storage
+
+volumes:
+  posts_app_storage:
