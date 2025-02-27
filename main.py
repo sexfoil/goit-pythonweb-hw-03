@@ -3,6 +3,7 @@ from datetime import datetime
 import urllib.parse
 import mimetypes
 import pathlib
+from jinja2 import Environment, FileSystemLoader
 import utils.data_storage as strorage
 
 
@@ -13,7 +14,19 @@ class HttpHandler(BaseHTTPRequestHandler):
         if pr_url.path == "/":
             self.send_html_file("index.html")
         elif pr_url.path == "/message":
+            print("MESSAGE")
             self.send_html_file("message.html")
+        elif pr_url.path == "/read":
+            env = Environment(loader=FileSystemLoader("templates"))
+
+            template = env.get_template("posts_template.html")
+            posts = strorage.get_posts()
+            output = template.render(
+                posts=posts,
+            )
+            with open("posts.html", "w", encoding="utf-8") as f:
+                f.write(output)
+            self.send_html_file("posts.html")
         else:
             if pathlib.Path().joinpath(pr_url.path[1:]).exists():
                 self.send_static()
